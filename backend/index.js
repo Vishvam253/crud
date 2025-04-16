@@ -1,7 +1,7 @@
 require('dotenv').config();
 const moment = require("moment");
 
-const { products } = require('./backend/V1/model/index.js');
+const { products } = require('./V1/model/index.js');
 
 console.log("SECRET_KEY:", process.env.SECRET_KEY);
 
@@ -51,9 +51,9 @@ cron.schedule("0 0 * * *",async()=>{
 
 connDB();   
 // app.set('db', require('../models/index.js'));
-const router = require("./backend/V1/router/index.js");
+const router = require("./V1/router/index.js");
 
-const categoryRoutes = require('./backend/V1/router/api/category.router.js');
+const categoryRoutes = require('./V1/router/api/category.router.js');
 app.use('/api/v1/category', categoryRoutes);
 
 // console.log("Router file loaded");

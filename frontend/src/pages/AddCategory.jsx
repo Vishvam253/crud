@@ -67,5 +67,5 @@ const AddCategory = ({ closeDrawer, refreshCategories }) => {
       </div>
     );
 };
-
+  
 export default AddCategory;
