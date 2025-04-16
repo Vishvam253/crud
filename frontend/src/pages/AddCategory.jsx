@@ -64,8 +64,8 @@ const AddCategory = ({ closeDrawer, refreshCategories }) => {
         </div>
       </form>
       <ToastContainer position='top-right' autoClose={2000}/>
-    </div>
-  );
+      </div>
+    );
 };
 
 export default AddCategory;
