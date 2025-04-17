@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: '../.env'});
 const cors = require('cors');
 const moment = require("moment");
 
@@ -41,7 +41,7 @@ app.options("*", cors());
 
 const connDB = async()=>{
     try {
-        await mongoose.connect('mongodb://localhost:27017/test');
+        await mongoose.connect(process.env.MONGO_URI);
         console.log(`MongoDB Connected`);
     } catch (error) {
         console.error(error.message);
