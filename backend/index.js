@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const moment = require("moment");
 
 const { products } = require('./V1/model/index.js');
@@ -7,7 +8,6 @@ console.log("SECRET_KEY:", process.env.SECRET_KEY);
 
 const express = require('express');
 // const bodyParser = require('body-parser');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const cron = require("node-cron");
 // const { connect } = require('./backend/V1/api');
@@ -16,15 +16,28 @@ const path = require("path");
 // app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "https://earnest-pithivier-99c33c.netlify.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-}));
 
+const allowedOrigins = [
+    "https://earnest-pithivier-99c33c.netlify.app",
+    "http://localhost:5173"
+  ];
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  }));
+  app.use((req, res, next) => {
+    console.log("Request origin:", req.headers.origin);
+    next();
+  });
+  
+app.options("*", cors());
 
 const connDB = async()=>{
     try {
