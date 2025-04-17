@@ -19,7 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
     "https://earnest-pithivier-99c33c.netlify.app",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    undefined
   ];
   app.use(cors({
     origin: function (origin, callback) {
@@ -41,7 +42,9 @@ app.options("*", cors());
 
 const connDB = async()=>{
     try {
-        await mongoose.connect(process.env.MONGO_URI);
+        await mongoose.connect(process.env.MONGO_URI,{
+            dbName: 'react-node'
+        });
         console.log(`MongoDB Connected`);
     } catch (error) {
         console.error(error.message);
