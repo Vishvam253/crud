@@ -17,9 +17,14 @@ const path = require("path");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: "https://earnest-pithivier-99c33c.netlify.app/",
-    credentials: true,
+    origin: [
+        "http://localhost:5173",
+        "https://earnest-pithivier-99c33c.netlify.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
 }));
+
 
 const connDB = async()=>{
     try {
