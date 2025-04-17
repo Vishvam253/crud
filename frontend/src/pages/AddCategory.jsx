@@ -7,6 +7,8 @@ const AddCategory = ({ closeDrawer, refreshCategories }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ const AddCategory = ({ closeDrawer, refreshCategories }) => {
   
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:8081/api/v1/category/add", { name: category }, {
+      await axios.post(`${BASE_URL}/api/v1/category/add`, { name: category }, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-type': 'application/json',

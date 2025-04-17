@@ -8,11 +8,12 @@ const CategoryPage = () => {
     const [categories, setCategories] = useState([]);
     const [editCategory, setEditCategory] = useState(null);
     const [showEditForm, setShowEditForm] = useState(null);
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const fetchCategories = async () => {
         try {
             const token = localStorage.getItem("token")
-            const res = await axios.get("http://localhost:8081/api/v1/category/get", {
+            const res = await axios.get(`${BASE_URL}/api/v1/category/get`, {
                 headers: {
                      Authorization: `Bearer ${token}`,
                     'Content-type': 'application/json',
@@ -28,7 +29,7 @@ const CategoryPage = () => {
 
         try {
             const token = localStorage.getItem("token");
-            const res = await axios.delete(`http://localhost:8081/api/v1/category/delete/${id}`, {
+            const res = await axios.delete(`${BASE_URL}/api/v1/category/delete/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

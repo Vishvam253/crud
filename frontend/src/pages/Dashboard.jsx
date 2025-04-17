@@ -29,6 +29,8 @@ const Dashboard = () => {
     const [categories, setCategories] = useState([]);
 
     const addProductRef = useRef(null);
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -65,7 +67,7 @@ const Dashboard = () => {
     const fetchCategories = async () => {
         try {
             const token = localStorage.getItem("token");
-          const res = await axios.get("http://localhost:8081/api/v1/category/get", {
+          const res = await axios.get(`${BASE_URL}/api/v1/category/get`, {
                 headers: {
                      Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -146,12 +148,12 @@ const Dashboard = () => {
                                         <div className="flex space-x-2">
                                              {product?.images?.map((img, index) => (
                                                 img.endsWith(".pdf") ? (
-                                                    <a key={index} href={`http://localhost:8081/${img}`} target="_blank" rel="noopener noreferrer"
+                                                    <a key={index} href={`${BASE_URL}/${img}`} target="_blank" rel="noopener noreferrer"
                                                         className="text-red-500 text-2xl">
                                                         <FaFilePdf size={40} />
                                                     </a>
                                                 ) : (
-                                                    <img key={index} src={`http://localhost:8081/${img}`} alt={product.name}
+                                                    <img key={index} src={`${BASE_URL}/${img}`} alt={product.name}
                                                         className="w-16 h-16 object-cover rounded-lg border" />
                                                 )
                                             ))}

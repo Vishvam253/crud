@@ -5,6 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
  const[serverError, setServerError] = useState("")
   const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ const Register = () => {
   const handleRegister = async (values) => {
   
     try { 
-      const res = await axios.post("http://localhost:8081/api/v1/auth/register", values);
+      const res = await axios.post(`${BASE_URL}/api/v1/auth/register`, values);
       console.log("Response", res.data);
       
       if (res.data.success) {

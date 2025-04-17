@@ -7,6 +7,8 @@ import { toast, ToastContainer } from "react-toastify";
 
 
 const Login = () => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
 
@@ -27,7 +29,7 @@ const Login = () => {
   
   const handleLogin = async (values, { setSubmitting }) => {
     try {
-      const res = await axios.post("http://localhost:8081/api/v1/auth/login", values);
+      const res = await axios.post(`${BASE_URL}/api/v1/auth/login`, values);
 
       if (res.data.success) {
         console.log("Token received", res.data.token);

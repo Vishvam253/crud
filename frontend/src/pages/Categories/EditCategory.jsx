@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 const EditCategory = ({show, category, onClose, onUpdate}) => {
     const [name, setName] = useState("");
     const drawerRef = useRef();
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
     useEffect(()=>{ 
         if(category){
@@ -16,7 +18,7 @@ const EditCategory = ({show, category, onClose, onUpdate}) => {
         e.preventDefault();
         try{
             const token = localStorage.getItem("token");
-            const res = await axios.put(`http://localhost:8081/api/v1/category/update/${category._id}`,{
+            const res = await axios.put(`${BASE_URL}/api/v1/category/update/${category._id}`,{
                 name
             },{
                 headers: {

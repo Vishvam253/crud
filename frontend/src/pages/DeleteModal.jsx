@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 Modal.setAppElement("#root");
 
 const DeleteModal = ({ isOpen, onClose, productId, onDeleteSuccess }) => {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     const navigate = useNavigate();
     const handleDelete = async () => {
         if (!productId) {
@@ -16,7 +18,7 @@ const DeleteModal = ({ isOpen, onClose, productId, onDeleteSuccess }) => {
         try {
             // console.log("Deleting product with ID:", productId);
             const token = localStorage.getItem("token");
-            await axios.delete(`http://localhost:8081/api/v1/product/delete/${productId}`, {
+            await axios.delete(`${BASE_URL}/api/v1/product/delete/${productId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
              

@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";    
 
 const EditProduct = ({id, closeDrawer, refreshProducts}) => {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     
     const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
             }
 
             try {
-                const res = await axios.get(`http://localhost:8081/api/v1/product/${id}`);
+                const res = await axios.get(`${BASE_URL}/api/v1/product/${id}`);
 
                 if (res.data.success) {
                     const product = res.data.data;
@@ -41,7 +43,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
                     setStatus(product.status || "Available");
 
                     if (product.images?.length > 0) {
-                        setPreviousImages(product.images.map(image => `http://localhost:8081/${image}`));
+                        setPreviousImages(product.images.map(image => `${BASE_URL}/${image}`));
                     } else {
                         setPreviousImages([]);
                     }
@@ -95,7 +97,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
                 return;
             }
 
-            const res = await axios.put(`http://localhost:8081/api/v1/product/update/${id}`, formData, {
+            const res = await axios.put(`${BASE_URL}/api/v1/product/update/${id}`, formData, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",

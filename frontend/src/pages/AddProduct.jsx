@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 const AddProduct = forwardRef((props, ref) => {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     const {closeDrawer, refreshProducts} = props;
     const [name, setName] = useState("");
     const [categoryId, setCategoryId] = useState("");
@@ -46,7 +48,7 @@ const AddProduct = forwardRef((props, ref) => {
         }
 
         try {
-            const res = await axios.post("http://localhost:8081/api/v1/product/add", formData, {
+            const res = await axios.post(`${BASE_URL}/api/v1/product/add`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                      Authorization: `Bearer ${token}`,
@@ -77,7 +79,7 @@ const AddProduct = forwardRef((props, ref) => {
     const fetchCategories = async () =>{
         try{
             const token = localStorage.getItem("token");
-           const res = await axios.get("http://localhost:8081/api/v1/category/get",{
+           const res = await axios.get(`${BASE_URL}/api/v1/category/get`,{
                headers: {
                  Authorization: `Bearer ${token}`,
                  'Content-Type': 'application/json',
