@@ -26,18 +26,20 @@ const Login = () => {
       .required("Password is required"),
   });
 
-  
+
   const handleLogin = async (values, { setSubmitting }) => {
     try {
-      const res = await axios.post(`${BASE_URL}/api/v1/auth/login`, values);
+      const res = await axios.post(`${BASE_URL}/api/v1/auth/login`, values,
+        { withCredentials: true }
+      );
 
       if (res.data.success) {
         console.log("Token received", res.data.token);
         localStorage.setItem("token", res.data.token);
         toast.success("Login successfully!")
-        setTimeout(()=>{
+        setTimeout(() => {
           navigate('/dashboard')
-        },[2000])
+        }, [2000])
       } else {
         if (res.data.message === "User not found") {
           alert("User not found!");
@@ -120,7 +122,7 @@ const Login = () => {
           </button>
         </p>
       </div>
-      <ToastContainer position="top-right" autoClose= {2000}/>
+      <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
 };
