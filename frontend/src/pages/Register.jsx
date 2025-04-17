@@ -7,7 +7,7 @@ import * as Yup from "yup";
 const Register = () => {
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
- const[serverError, setServerError] = useState("")
+  const [serverError, setServerError] = useState("")
   const navigate = useNavigate();
 
   const initialValues = {
@@ -18,27 +18,29 @@ const Register = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-    .min(3, "Name must be atleast 3 characters")
-    .required("Name is required"),
+      .min(3, "Name must be atleast 3 characters")
+      .required("Name is required"),
     email: Yup.string()
-     .email("Invalid email format")
-     .required("Email is required"),
+      .email("Invalid email format")
+      .required("Email is required"),
     password: Yup.string()
-     .min(5, "Password must be atleast 5 characters")
-     .required("Password is required"),
+      .min(5, "Password must be atleast 5 characters")
+      .required("Password is required"),
   });
 
   const handleRegister = async (values) => {
-  
-    try { 
-      const res = await axios.post(`${BASE_URL}/api/v1/auth/register`, values);
+
+    try {
+      const res = await axios.post(`${BASE_URL}/api/v1/auth/register`, values,
+        { withCredentials: true }
+      );
       console.log("Response", res.data);
-      
+
       if (res.data.success) {
         // alert("Registered successfully!");
         navigate("/login");
       } else {
-       setServerError(res.data.message)
+        setServerError(res.data.message)
       }
     } catch (error) {
       console.error(error);
@@ -48,7 +50,7 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="bg-white p-6 rounded-lg shadow-md w-96">
+      <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
         {serverError && <p className="text-red-500 text-center mb-3">{serverError}</p>}
 
@@ -62,7 +64,7 @@ const Register = () => {
               <div className="mb-3">
                 <label className="block font-medium">Name</label>
                 <Field
-                  id = "name"
+                  id="name"
                   type="text"
                   name="name"
                   className="w-full p-2 border rounded"
@@ -113,7 +115,7 @@ const Register = () => {
         </Formik>
 
         <p className="mt-3 text-center text-gray-600">
-      Already have an account?{" "}
+          Already have an account?{" "}
           <button
             onClick={() => navigate("/login")}
             className="text-blue-500 hover:underline"
