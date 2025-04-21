@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
     headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-});
+});      
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -25,11 +25,11 @@ const Dashboard = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [editProductId, setEditProductId] = useState(null);
-    const [categories, setCategories] = useState([]);
     const [showAddCategory, setShowAddCategory] = useState(false);
+    const [categories, setCategories] = useState([]);
 
     const addProductRef = useRef(null);
-    
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -37,7 +37,7 @@ const Dashboard = () => {
     }, [search]);
 
     const fetchProducts = async () => {
-        try {       
+        try {
             const token = localStorage.getItem("token");
             const response = await axiosInstance.get(`/product/get?search=${search}`, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -66,10 +66,10 @@ const Dashboard = () => {
     const fetchCategories = async () => {
         try {
             const token = localStorage.getItem("token");
-          const res = await axios.get(`${BASE_URL}/api/v1/category/get`, {
-              'Content-Type': 'application/json',
+            const res = await axios.get(`${BASE_URL}/api/v1/category/get`, {
                 headers: {
-                     Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
             });
             setCategories(res.data.data || []);
@@ -80,7 +80,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchCategories();
-                    Categories
     }, []);
 
     return (
@@ -90,7 +89,8 @@ const Dashboard = () => {
 
                 <button
                     onClick={() => navigate('/categories')}
-                className='bg-blue-500 text-white px-4 p-3 rounded-md hover:bg-blue-700'>
+                    className='bg-blue-500 text-white px-4 p-3 rounded-md hover:bg-blue-700'>
+                    Categories
                 </button>
 
 
@@ -110,7 +110,7 @@ const Dashboard = () => {
                         onClick={handleLogout}
                     >
                         <FaSignOutAlt className="mr-2" /> Logout
-                    </button>
+                    </button>   
                 </div>
             </div>
 
@@ -145,7 +145,7 @@ const Dashboard = () => {
                                     <td className="border border-gray-300 px-4 py-3">{product.status}</td>
                                     <td className="border border-gray-300 px-4 py-3">
                                         <div className="flex space-x-2">
-                                             {product?.images?.map((img, index) => (
+                                            {product?.images?.map((img, index) => (
                                                 img.endsWith(".pdf") ? (
                                                     <a key={index} href={`${BASE_URL}/${img}`} target="_blank" rel="noopener noreferrer"
                                                         className="text-red-500 text-2xl">

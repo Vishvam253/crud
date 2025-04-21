@@ -3,6 +3,7 @@
 const db = require("../model/index");
 const products = db.products;
 const moment = require('moment');
+const Category = require('../model/category');
 
 exports.add = async (req, res, next) => {
 
@@ -19,7 +20,7 @@ exports.add = async (req, res, next) => {
         }
 
        
-        const category = JSON.parse(req.body.category);
+        const category = await Category.findById(category);
 
         const imagePaths = req.files.map(file => file.path);
 
@@ -35,7 +36,10 @@ exports.add = async (req, res, next) => {
                 name: name,
                 code: code,
                 price: price,
-                category: category,
+                category: {
+                    _id: category._id,
+                    name: category.name,
+                },
                 manufactureDate: new Date(manufactureDate),
                 expiryDate: new Date(expiryDate),
                 owner: req.userId,
