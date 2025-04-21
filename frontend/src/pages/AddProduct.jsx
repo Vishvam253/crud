@@ -29,7 +29,7 @@ const AddProduct = forwardRef((props, ref) => {
         const formData = new FormData();
 
         formData.append("name", name);
-        formData.append("category", categoryId);
+        formData.append("category", JSON.stringify(categoryId));
         formData.append("price", price);
         formData.append("code", code);
         formData.append("manufactureDate", manufactureDate);
@@ -50,6 +50,7 @@ const AddProduct = forwardRef((props, ref) => {
         try {
             const res = await axios.post(`${BASE_URL}/api/v1/product/add`, formData, {
                 headers: {
+                    "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
                 }
             });

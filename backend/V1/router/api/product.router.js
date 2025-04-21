@@ -12,4 +12,3 @@ router.put('/update/:id', verifyToken, upload.array("productImage", 5), productC
 router.get('/:id', productController.getById);
 
 module.exports = router;
-    

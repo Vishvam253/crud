@@ -25,8 +25,8 @@ const Dashboard = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [editProductId, setEditProductId] = useState(null);
-    const [showAddCategory, setShowAddCategory] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [showAddCategory, setShowAddCategory] = useState(false);
 
     const addProductRef = useRef(null);
     
@@ -67,9 +67,9 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem("token");
           const res = await axios.get(`${BASE_URL}/api/v1/category/get`, {
+              'Content-Type': 'application/json',
                 headers: {
                      Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
                 },
             });
             setCategories(res.data.data || []);
@@ -80,6 +80,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchCategories();
+                    Categories
     }, []);
 
     return (
@@ -90,7 +91,6 @@ const Dashboard = () => {
                 <button
                     onClick={() => navigate('/categories')}
                 className='bg-blue-500 text-white px-4 p-3 rounded-md hover:bg-blue-700'>
-                    Categories
                 </button>
 
 
