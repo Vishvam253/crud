@@ -8,7 +8,7 @@ const Category = require('../model/category');
 exports.add = async (req, res, next) => {
 
     try {
-        let { name, code, price, manufactureDate, expiryDate, owner, status, } = req.body;
+        let { name, code, price, manufactureDate, expiryDate, status, category: categoryId} = req.body;
         let { path } = req.files;
         console.log("file info", req.file)
         
@@ -20,7 +20,10 @@ exports.add = async (req, res, next) => {
         }
 
        
-        const category = await Category.findById(category);
+        const categoryData = await Category.findById(categoryId);
+        if (!categoryData) {
+            return res.status(404).json({ message: "Category not found" });
+          }
 
         const imagePaths = req.files.map(file => file.path);
 
