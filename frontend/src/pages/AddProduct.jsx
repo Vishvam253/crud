@@ -29,7 +29,7 @@ const AddProduct = forwardRef((props, ref) => {
         const formData = new FormData();
 
         formData.append("name", name);
-        formData.append("category", JSON.stringify(categoryId));
+        formData.append("category", categoryId);
         formData.append("price", price);
         formData.append("code", code);
         formData.append("manufactureDate", manufactureDate);

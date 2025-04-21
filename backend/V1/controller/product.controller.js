@@ -40,8 +40,8 @@ exports.add = async (req, res, next) => {
                 code: code,
                 price: price,
                 category: {
-                    _id: categoryData._id,
-                    name: categoryData.name,
+                 _id: categoryData._id,
+                 name: categoryData.name,
                 },
                 manufactureDate: new Date(manufactureDate),
                 expiryDate: new Date(expiryDate),
