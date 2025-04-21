@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import moment from "moment";    
+import moment from "moment";
 
-const EditProduct = ({id, closeDrawer, refreshProducts}) => {
+const EditProduct = ({ id, closeDrawer, refreshProducts }) => {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-    
+
     const navigate = useNavigate();
 
     const [name, setName] = useState("");
@@ -20,6 +20,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
     const [productImages, setProductImages] = useState([]);
     const [previousImages, setPreviousImages] = useState([]);
     const [disablePrice, setDisablePrice] = useState(false);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -69,6 +70,22 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
         fetchProduct();
     }, [id]);
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await axios.get(`${BASE_URL}/api/v1/category/get`);
+                if (res.data.success) {
+                    console.log("Fetched categories:", res.data.data);
+                    setCategories(res.data.data);
+                }
+            } catch (err) {
+                console.error("Error fetching categories:", err);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+
     const handleUpdateProduct = async (e) => {
         e.preventDefault();
 
@@ -101,7 +118,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
-                },  
+                },
             });
 
             if (res.data.success) {
@@ -116,7 +133,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
             console.error("Error updating product:", error);
             toast.error("Failed to update product!");
         }
-    };
+    }; ``
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-500 p-4">
@@ -133,8 +150,20 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
 
                         <div>
                             <label className="block text-gray-700 font-medium">Category:</label>
-                            <input type="text" className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
-                                value={category} onChange={(e) => setCategory(e.target.value)} required />
+
+                            <select
+                                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                required
+                            >
+                                <option>Select Category</option>
+                                {categories.map(cat => (
+                                    <option key={cat._id} value={cat._id}>
+                                        {cat.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
@@ -176,23 +205,23 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
                         </select>
                     </div>
 
-                 
+
                     {previousImages.length > 0 && (
                         <div className="mb-4">
                             <p className="text-gray-700 font-medium">Current Images:</p>
-                                
+
                             <div className="flex flex-wrap gap-2 mt-2">
                                 {previousImages.map((image, index) => (
                                     <div key={index} className="relative">
 
                                         {image.endsWith(".pdf") ? (
-                                            <a href={image} target="_blank" rel="noopener noreferrer" 
-                                            className="text-blue-600 font-semibold hover:underline">
+                                            <a href={image} target="_blank" rel="noopener noreferrer"
+                                                className="text-blue-600 font-semibold hover:underline">
                                                 📄 PDF {index + 1}
                                             </a>
                                         ) : (
                                             <img src={image} alt={`Product ${index}`}
-                                            className="w-24 h-24 object-cover rounded-md shadow" />
+                                                className="w-24 h-24 object-cover rounded-md shadow" />
                                         )}
                                     </div>
                                 ))}
@@ -200,7 +229,6 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
                         </div>
                     )}
 
-                  
                     <div className="mt-4">
                         <label className="text-gray-700 font-medium">Product Images / PDFs:</label>
                         <div className="relative border border-gray-300 rounded-md p-4 bg-gray-50 hover:bg-gray-100 transition cursor-pointer text-center">
@@ -218,7 +246,7 @@ const EditProduct = ({id, closeDrawer, refreshProducts}) => {
                             <p className="text-gray-500 text-sm font-medium">Click to upload or drag & drop files here</p>
                         </div>
 
-                       
+
                         {productImages.length > 0 && (
                             <div className="mt-2 space-y-1">
                                 {Array.from(productImages).map((file, index) => (

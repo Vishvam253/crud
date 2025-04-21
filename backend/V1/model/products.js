@@ -18,8 +18,9 @@ var productModel = mongoose.Schema(
             min: 0
         },
         category: {
-          _id: mongoose.Schema.Types.ObjectId,
-          name: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "categories",
+            required: true
         },
         manufactureDate: {
             type: Date,

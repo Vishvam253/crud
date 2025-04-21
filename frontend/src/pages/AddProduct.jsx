@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 const AddProduct = forwardRef((props, ref) => {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-    const {closeDrawer, refreshProducts} = props;
+    const { closeDrawer, refreshProducts } = props;
     const [name, setName] = useState("");
     const [categoryId, setCategoryId] = useState("");
     const [price, setPrice] = useState("");
@@ -19,17 +19,17 @@ const AddProduct = forwardRef((props, ref) => {
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchCategories();
-    },[]);
+    }, []);
 
     const handleAddProduct = async (e) => {
         e.preventDefault();
-        const selectedCategory = categories.find(cat => cat._id === categoryId);
+
         const formData = new FormData();
-        
+
         formData.append("name", name);
-        formData.append("category", JSON.stringify(selectedCategory));
+        formData.append("category", categoryId);
         formData.append("price", price);
         formData.append("code", code);
         formData.append("manufactureDate", manufactureDate);
@@ -50,23 +50,24 @@ const AddProduct = forwardRef((props, ref) => {
         try {
             const res = await axios.post(`${BASE_URL}/api/v1/product/add`, formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
-                     Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 }
             });
-             
+
             if (res.data.success) {
                 toast.success("Product added successfully!");
-                    refreshProducts();
+                refreshProducts();
                 setTimeout(() => {
-                    closeDrawer(); 
+                    closeDrawer();
                     navigate("/dashboard");
                 }, 2000);
             } else {
                 alert("Error: " + res.data.message);
             }
         } catch (error) {
-            console.error("Error adding product:", error.response ? error.response.data : error);
+            console.error("Full error object:", error);
+            console.error("Response data:", error?.response?.data);
+
             alert("Failed to add product!");
         }
     };
@@ -76,38 +77,38 @@ const AddProduct = forwardRef((props, ref) => {
         setProductImages(filesArray);
     };
 
-    const fetchCategories = async () =>{
-        try{
+    const fetchCategories = async () => {
+        try {
             const token = localStorage.getItem("token");
-           const res = await axios.get(`${BASE_URL}/api/v1/category/get`,{
-               headers: {
-                 Authorization: `Bearer ${token}`,
-                 'Content-Type': 'application/json',
-               },
-           });
-           setCategories(res.data.data || []);
-        }catch(error){
+            const res = await axios.get(`${BASE_URL}/api/v1/category/get`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            setCategories(res.data.data || []);
+        } catch (error) {
             console.error("Error fetching categories", error)
         }
     };
 
-    useImperativeHandle(ref,()=>({
+    useImperativeHandle(ref, () => ({
         refreshCategories: fetchCategories,
     }))
 
-        
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-500 p-4">
-            <form 
-                onSubmit={handleAddProduct} 
+            <form
+                onSubmit={handleAddProduct}
                 className="bg-white p-6 md:p-8 rounded-lg shadow-xl w-full space-y-6"
             >
                 <h2 className="text-3xl font-bold text-center text-gray-700">Add Product</h2>
 
-                
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Product Name:</label>
-                    <input 
+                    <input
                         type="text"
                         placeholder="Enter product name"
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -117,24 +118,24 @@ const AddProduct = forwardRef((props, ref) => {
                     />
                 </div>
 
-             
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Category:</label>
-                  <select value={categoryId} onChange={(e)=>setCategoryId(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
+                    <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
                     >
-                  <option value="">Select Category</option>
-                  {categories.map((cat)=>(
-                    <option key={cat._id} value={cat._id}> {cat.name} </option>
-                  ))}
-                  </select>
+                        <option value="">Select Category</option>
+                        {categories.map((cat) => (
+                            <option key={cat._id} value={cat._id}> {cat.name} </option>
+                        ))}
+                    </select>
                 </div>
 
-                        
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Price:</label>
-                    <input 
+                    <input
                         type="number"
                         placeholder="Enter price"
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -144,10 +145,10 @@ const AddProduct = forwardRef((props, ref) => {
                     />
                 </div>
 
-                
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Product Code:</label>
-                    <input 
+                    <input
                         type="text"
                         placeholder="Enter product code"
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -157,10 +158,10 @@ const AddProduct = forwardRef((props, ref) => {
                     />
                 </div>
 
-               
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Manufacture Date:</label>
-                    <input 
+                    <input
                         type="date"
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         value={manufactureDate}
@@ -171,7 +172,7 @@ const AddProduct = forwardRef((props, ref) => {
 
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Expiry Date:</label>
-                    <input 
+                    <input
                         type="date"
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         value={expiryDate}
@@ -180,10 +181,10 @@ const AddProduct = forwardRef((props, ref) => {
                     />
                 </div>
 
-              
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Status:</label>
-                    <select 
+                    <select
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
@@ -194,7 +195,7 @@ const AddProduct = forwardRef((props, ref) => {
                     </select>
                 </div>
 
-               
+
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Upload Images/PDF:</label>
                     <input
@@ -207,8 +208,8 @@ const AddProduct = forwardRef((props, ref) => {
                     />
                 </div>
 
-                
-                <button 
+
+                <button
                     type="submit"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-bold shadow-lg transition-all duration-300"
                 >

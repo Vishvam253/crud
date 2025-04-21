@@ -9,8 +9,7 @@ exports.addCategory = async(req, res) =>{
         }
         const newCategory = await category.create({name: name.trim()});
         return res.status(201).json({success: true, message: 'Category added', data: newCategory});
-    }catch(error){  
-        
+    }catch(error){      
         return res.status(500).json({success: false, message: "server error"});
     }
 };
@@ -40,7 +39,7 @@ exports.deleteCategory = async (req, res)=>{
 
 exports.updateCategory = async(req, res) => {
     try{
-        const {name} = req.body;
+        const {name} = req.body;;
         const updated = await category.findByIdAndUpdate(req.params.id, {name}, {new: true});
         if(!updated){
             return res.status(404).json({success: false, message: "Category not found"});

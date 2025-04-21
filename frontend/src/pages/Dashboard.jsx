@@ -8,14 +8,14 @@ import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import AddCategory from './AddCategory';
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8081/api/v1",
+    baseURL: `${BASE_URL}/api/v1`,
     headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
 });
-
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -29,8 +29,7 @@ const Dashboard = () => {
     const [categories, setCategories] = useState([]);
 
     const addProductRef = useRef(null);
-    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+    
 
     useEffect(() => {
         const token = localStorage.getItem("token");

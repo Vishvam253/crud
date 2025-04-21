@@ -15,12 +15,9 @@ exports.add = async (req, res, next) => {
         console.log("Uploaded Files:", req.files); 
         
         if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ success: false, message: "Product image is required!" });
+            return res.status(400).json({success: false, message: "Product image is required!"});
         }
-
-       
-        const category = JSON.parse(req.body.category);
-
+        const category = req.body.category;
         const imagePaths = req.files.map(file => file.path);
 
         if (!name || !code || !price || !category || !manufactureDate || !expiryDate) {
@@ -86,7 +83,7 @@ exports.get = async (req, res, next) => {
                 ]
             };
         }
-        const productData = await products.find(where);
+        const productData = await products.find(where).populate("category", "name");
 
         res.json({ "success": true, "message": "Product data fetched successfully!!", "data": productData });
 
