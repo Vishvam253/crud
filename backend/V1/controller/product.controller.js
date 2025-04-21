@@ -11,7 +11,7 @@ exports.add = async (req, res, next) => {
         let { name, code, price, manufactureDate, expiryDate, status, category: categoryId} = req.body;
         let { path } = req.files;
         console.log("file info", req.file)
-
+        
         console.log("Request Body:", req.body); 
         console.log("Uploaded Files:", req.files); 
         
@@ -22,12 +22,12 @@ exports.add = async (req, res, next) => {
        
         const categoryData = await Category.findById(categoryId);
         if (!categoryData) {
-            return res.status(404).json({ message: "Category not found" });
-          }
+      return res.status(404).json({ message: "Category not found" });
+    }
 
         const imagePaths = req.files.map(file => file.path);
 
-        if (!name || !code || !price || !category || !manufactureDate || !expiryDate) {
+        if (!name || !code || !price || !categoryId || !manufactureDate || !expiryDate) {
             return res.status(400).json({ success: false, message: "All fields are required!" });
         }
 
@@ -40,8 +40,8 @@ exports.add = async (req, res, next) => {
                 code: code,
                 price: price,
                 category: {
-                    _id: categoryId._id,
-                    name: categoryId.name,
+                    _id: categoryData._id,
+                    name: categoryData.name,
                 },
                 manufactureDate: new Date(manufactureDate),
                 expiryDate: new Date(expiryDate),
@@ -93,8 +93,8 @@ exports.get = async (req, res, next) => {
             };
         }
         const productData = await products.find(where);
-
         res.json({ "success": true, "message": "Product data fetched successfully!!", "data": productData });
+
 
     } catch (error) {
         console.log(error)
