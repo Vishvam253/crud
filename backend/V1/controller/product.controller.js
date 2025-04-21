@@ -92,7 +92,7 @@ exports.get = async (req, res, next) => {
                 ]
             };
         }
-        const productData = await products.find(where);
+        const productData = await products.find(where).populate("category", "name");
         res.json({ "success": true, "message": "Product data fetched successfully!!", "data": productData });
 
 
