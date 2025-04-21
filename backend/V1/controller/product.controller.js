@@ -11,7 +11,7 @@ exports.add = async (req, res, next) => {
         let { name, code, price, manufactureDate, expiryDate, status, category: categoryId} = req.body;
         let { path } = req.files;
         console.log("file info", req.file)
-        
+
         console.log("Request Body:", req.body); 
         console.log("Uploaded Files:", req.files); 
         
@@ -40,8 +40,8 @@ exports.add = async (req, res, next) => {
                 code: code,
                 price: price,
                 category: {
-                    _id: category._id,
-                    name: category.name,
+                    _id: categoryId._id,
+                    name: categoryId.name,
                 },
                 manufactureDate: new Date(manufactureDate),
                 expiryDate: new Date(expiryDate),
