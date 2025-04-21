@@ -20,7 +20,7 @@ exports.add = async (req, res, next) => {
         }
 
        
-        const categoryData = await Category.findById(categoryId);
+        const categoryData = await Category.findById(categoryId.trim());
         if (!categoryData) {
       return res.status(404).json({ message: "Category not found" });
     }
