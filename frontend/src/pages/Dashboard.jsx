@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
     headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-});      
+});
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -110,7 +110,7 @@ const Dashboard = () => {
                         onClick={handleLogout}
                     >
                         <FaSignOutAlt className="mr-2" /> Logout
-                    </button>   
+                    </button>
                 </div>
             </div>
 
