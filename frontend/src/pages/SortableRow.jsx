@@ -17,7 +17,7 @@ const SortableRow = ({ product, index, onEdit, onDelete }) => {
             {...attributes}
             {...listeners}
             style={style}
-            className="text-gray-700 border-b hover:bg-gray-100 cursor-move"
+            className="text-gray-700 border-b hover:bg-gray-200 cursor-move"
         >
             <td className="border px-4 py-3"
                >
