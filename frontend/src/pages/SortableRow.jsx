@@ -20,7 +20,7 @@ const SortableRow = ({ product, index, onEdit, onDelete }) => {
             className="text-gray-700 border-b hover:bg-gray-100 cursor-move"
         >
             <td className="border px-4 py-3"
-               >
+            >
                 {product.name}
             </td>
             <td className="border px-4 py-3">{product.category?.name || "N/A"}</td>
@@ -32,13 +32,13 @@ const SortableRow = ({ product, index, onEdit, onDelete }) => {
             <td className="border px-4 py-3">
                 <div className="flex space-x-2">
                     {product?.images?.map((img, index) => {
-                        const cleanPath = img.replace(/^public\//, '').replace(/\\/g, '/');
+                        const filename = img.replace(/^.*[\\/]/, '');
                         return img.endsWith(".pdf") ? (
-                            <a key={index} href={`${BASE_URL}/${cleanPath}`} target="_blank" rel="noopener noreferrer">
+                            <a key={index} href={`${BASE_URL}/uploads/${filename}`} target="_blank" rel="noopener noreferrer">
                                 <FaFilePdf size={40} className="text-red-500" />
                             </a>
                         ) : (
-                            <img key={index} src={`${BASE_URL}/${cleanPath}`} alt={product.name} className="w-16 h-16 object-cover rounded-lg border" />
+                            <img key={index} src={`${BASE_URL}/uploads/${filename}`} alt={product.name} className="w-16 h-16 object-cover rounded-lg border" />
                         );
                     })}
                 </div>

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
-import { FaPlus, FaSignOutAlt, FaEdit, FaTrash, FaFilePdf, FaBars, FaTimes } from 'react-icons/fa';
+import { FaSignOutAlt, FaEdit, FaTrash, FaFilePdf, FaBars, FaTimes } from 'react-icons/fa';
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import AddCategory from './AddCategory';
