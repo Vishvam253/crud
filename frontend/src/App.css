@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+tr.dragging{
+    background-color: #e2e8f0;
+}

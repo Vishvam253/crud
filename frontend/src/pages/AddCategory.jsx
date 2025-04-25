@@ -7,6 +7,7 @@ const AddCategory = ({ closeDrawer, refreshCategories }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
+  
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 

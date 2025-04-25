@@ -7,6 +7,20 @@ import { FaPlus, FaSignOutAlt, FaEdit, FaTrash, FaFilePdf, FaBars, FaTimes } fro
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import AddCategory from './AddCategory';
+import {
+    DndContext,
+    closestCenter,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from '@dnd-kit/core';
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+    arrayMove
+} from '@dnd-kit/sortable';
+import SortableRow from './SortableRow';
+
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -82,6 +96,8 @@ const Dashboard = () => {
         fetchCategories();
     }, []);
 
+    const sensors = useSensors(useSensor(PointerSensor,{activationConstraint:{distance: 5,}}))
+
     return (
         <div className="p-6 bg-gray-200 min-h-screen">
             <div className="flex justify-between items-center mb-6 p-4 bg-white shadow-lg rounded-lg">
@@ -133,53 +149,43 @@ const Dashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.length > 0 ? (
-                            products.map((product) => (
-                                <tr key={product._id} className="text-gray-700 border-b hover:bg-gray-100">
-                                    <td className="border border-gray-300 px-4 py-3">{product.name}</td>
-                                    <td className="border border-gray-300 px-4 py-3">{product.category?.name || "N/A"}</td>
-                                    <td className="border border-gray-300 px-4 py-3">₹{product.price}</td>
-                                    <td className="border border-gray-300 px-4 py-3">{product.code}</td>
-                                    <td className="border border-gray-300 px-4 py-3">{new Date(product.manufactureDate).toLocaleDateString()}</td>
-                                    <td className="border border-gray-300 px-4 py-3">{new Date(product.expiryDate).toLocaleDateString()}</td>
-                                    <td className="border border-gray-300 px-4 py-3">{product.status}</td>
-                                    <td className="border border-gray-300 px-4 py-3">
-                                        <div className="flex space-x-2">
-                                            {product?.images?.map((img, index) => (
-                                                img.endsWith(".pdf") ? (
-                                                    <a key={index} href={`${BASE_URL}/${img}`} target="_blank" rel="noopener noreferrer"
-                                                        className="text-red-500 text-2xl">
-                                                        <FaFilePdf size={40} />
-                                                    </a>
-                                                ) : (
-                                                    <img key={index} src={`${BASE_URL}/${img}`} alt={product.name}
-                                                        className="w-16 h-16 object-cover rounded-lg border" />
-                                                )
-                                            ))}
-                                        </div>
-                                    </td>
-                                    <td className="border border-gray-300 px-4 py-3">
-                                        <button onClick={() => handleEditProduct(product._id)}
-                                            className="mr-2 text-blue-600 hover:text-blue-800">
-                                            <FaEdit size={21} />
-                                        </button>
-                                        <button
-                                            className="text-red-600 hover:text-red-800"
-                                            onClick={() => {
+                        <DndContext
+                        sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={({ active, over }) => {
+                                if (active.id !== over?.id) {
+                                    const oldIndex = products.findIndex(p => p._id === active.id);
+                                    const newIndex = products.findIndex(p => p._id === over?.id);
+                                    setProducts((items) => arrayMove(items, oldIndex, newIndex));
+                                }
+                            }}
+                        >
+                            <SortableContext
+                                items={products.map(p => p._id)}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                {products.length > 0 ? (
+                                    products.map((product) => (
+                                        <SortableRow
+                                            key={product._id}
+                                            product={product}
+                                            onEdit={handleEditProduct}
+                                            onDelete={(id) => {
                                                 setModalOpen(true);
-                                                setSelectedProductId(product._id);
+                                                setSelectedProductId(id);
                                             }}
-                                        >
-                                            <FaTrash size={19} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="9" className="text-center p-6 text-gray-500">No products found</td>
-                            </tr>
-                        )}
+                                        />
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9" className="text-center p-6 text-gray-500">
+                                            No products found
+                                        </td>
+                                    </tr>
+                                )}
+                            </SortableContext>
+                        </DndContext>
+
                     </tbody>
                 </table>
             </div>
