@@ -33,6 +33,8 @@ const SortableRow = ({ product, index, onEdit, onDelete }) => {
                 <div className="flex space-x-2">
                     {product?.images?.map((img, index) => {
                         const cleanPath = img.replace(/^public\//, '').replace(/\\/g, '/');
+                        console.log("path", cleanPath);
+                        
                         return img.endsWith(".pdf") ? (
                             <a key={index} href={`${BASE_URL}/${cleanPath}`} target="_blank" rel="noopener noreferrer">
                                 <FaFilePdf size={40} className="text-red-500" />
