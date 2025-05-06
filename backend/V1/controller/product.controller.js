@@ -4,8 +4,9 @@ const db = require("../model/index");
 const products = db.products;
 const moment = require('moment');
 const Category = require('../model/category');
+const cloudinary = require('../../config/cloudinary')
 
-exports.add = async (req, res, next) => {
+exports.add = async (req, res, next) => {   
 
     try {
         let { name, code, price, manufactureDate, expiryDate, status, category: categoryId} = req.body;
@@ -25,7 +26,7 @@ exports.add = async (req, res, next) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-        const imagePaths = req.files.map(file => file.path);
+         const imagePaths = req.files.map(file => file.path); 
 
         if (!name || !code || !price || !categoryId || !manufactureDate || !expiryDate) {
             return res.status(400).json({ success: false, message: "All fields are required!" });
@@ -93,7 +94,7 @@ exports.get = async (req, res, next) => {
             };
         }
         const productData = await products.find(where).populate("category", "name");
-        res.json({ "success": true, "message": "Product data fetched successfully!!", "data": productData });
+        res.json({ "success": true, "message": "Product data     fetched successfully!!", "data": productData });
 
 
     } catch (error) {
@@ -139,7 +140,7 @@ exports.update = async (req, res) => {
         // console.log("Received params", req.params);
         // console.log("Received body",req.body);
         // console.log("Received file:", req.files); 
-        
+
         if (req.file) 
             console.log(req.file); 
 

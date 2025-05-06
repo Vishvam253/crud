@@ -17,7 +17,7 @@ var productModel = mongoose.Schema(
             required: true,
             min: 0
         },
-        category: {
+        category: {                                
             type: mongoose.Schema.Types.ObjectId,
             ref: "Category",
             required: true

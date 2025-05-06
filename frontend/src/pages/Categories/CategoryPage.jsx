@@ -70,7 +70,7 @@ const CategoryPage = () => {
             />
             {showEditForm && (
                 <EditCategory 
-                     show={showEditForm}
+                    show={showEditForm}
                     category={editCategory}
                     onClose={closeEditForm}
                     onUpdate={fetchCategories}

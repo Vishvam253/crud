@@ -19,7 +19,7 @@ const AddProduct = forwardRef((props, ref) => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    useEffect(() => {          
         fetchCategories();
     }, []);
 
@@ -123,7 +123,8 @@ const AddProduct = forwardRef((props, ref) => {
                 <div>
                     <label className="block text-gray-700 font-medium mb-1">Category:</label>
                     <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm 
+                        focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                     >
                         <option value="">Select Category</option>
