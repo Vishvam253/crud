@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const productController = require('../../controller/product.controller');
-const upload = require('../middleware/cloudinary');
-// const upload = require('../../middleware/fileUpload')
+
+const upload = require('../../middleware/fileUpload')
 const verifyToken = require('../../middleware/verifyToken');
 
 

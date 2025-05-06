@@ -87,7 +87,7 @@ app.use('/api/v1/category', categoryRoutes);
 
 // app.use('/api', require('./backend/V1/router')); 
 app.use("/api/v1", router);
-// app.use("/uploads", express.static(path.join(__dirname,"/uploads")));
+app.use("/uploads", express.static(path.join(__dirname,"/uploads")));
 
 app.listen(process.env.DEV_APP_PORT || 8081, () => {
     console.log(`Server running at http://localhost:${process.env.DEV_APP_PORT || 8081}`);

@@ -4,7 +4,7 @@ const db = require("../model/index");
 const products = db.products;
 const moment = require('moment');
 const Category = require('../model/category');
-const cloudinary = require('../../config/cloudinary')
+
 
 exports.add = async (req, res, next) => {   
 
@@ -26,7 +26,7 @@ exports.add = async (req, res, next) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-         const imagePaths = req.files.map(file => file.path); 
+             const imagePaths = req.files.map(file => file.path); 
 
         if (!name || !code || !price || !categoryId || !manufactureDate || !expiryDate) {
             return res.status(400).json({ success: false, message: "All fields are required!" });
